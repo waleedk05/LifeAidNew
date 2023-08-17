@@ -36,12 +36,25 @@ const DropDown = ({ data = {},
                     source={images.downArrow} />
 
             </TouchableOpacity>
-            {showOption && (<View>
+            {showOption && (<View style={{
+                backgroundColor: 'pink',
+                padding: 2
+            }}>
                 {data.map((val, i) => {
                     return (<TouchableOpacity
                         key={String(i)}
                         onPress={() => onSelectedItem(val)}
+                        style={{
+                            backgroundColor: value.id == val.id ? 'grey' : 'white',
+                            padding: 8,
+                            borderRadius: 6,
+                            minHeight: 42,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: 6,
 
+                        }}
 
 
                     >
@@ -62,13 +75,15 @@ const styles = StyleSheet.create({
     },
     dropDownStyle: {
         backgroundColor: 'rgba(0,0,0,0.2)',
-        padding: 15,
-        borderRadius: 6,
+        padding: 19,
+        borderRadius: 9,
         minHeight: 42,
         justifyContent: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderColor: 'black',
+
 
     }
 });
