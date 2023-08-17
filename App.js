@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import OnboardingStarter from "./screens/OnboardingStarter";
 import {
   GetStarted,
-  OtpCode,
+  ForgotPassword,
   OtpVerification,
   ResetPassword,
   Signin,
@@ -72,8 +72,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="OtpCode"
-          component={OtpCode}
+          name="ForgotPassword"
+          component={ForgotPassword}
           options={{ headerShown: false }}
         />
         <Stack.Screen

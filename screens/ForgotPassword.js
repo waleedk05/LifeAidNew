@@ -6,15 +6,23 @@ import { useState } from 'react';
 import images from "../constants/images";
 import { COLORS, FONTS, SIZES } from "../constants/themes";
 
-function OtpVerification({ navigation }) {
 
-  const [verificationCode, setVerificationCode] = useState("");
-  const handleChangeVerificationCode = (text) => {
-    // Limiting the verification code to 6 characters
-    if (verificationCode.length <= 6) {
-      setVerificationCode(text);
-    }
+function ForgotPassword({ navigation }) {
+
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('+92'); //Country Code
+
+  const handleChangeCountryCode = (text) => {
+    setCountryCode(text);
   };
+
+  const handleChangePhoneNumber = (text) => {
+    // Limiting the phone number to 10 characters
+    if (text.length <= 10) {
+      setPhoneNumber(text);
+    }
+  }
 
 
   return (
@@ -41,8 +49,9 @@ function OtpVerification({ navigation }) {
             paddingTop: 0,
           }}
         >
-          <Image source={images.logo} style={{ marginTop: 0 }}></Image>
+          <Image source={images.logo} style={{ marginTop: 10 }}></Image>
         </View>
+
         <View
           style={{
             marginLeft: 25,
@@ -54,44 +63,58 @@ function OtpVerification({ navigation }) {
             style={{
               ...FONTS.largerTitles,
               color: COLORS.primaryRed,
-              marginTop: 50,
+              marginTop: 40,
             }}
           >
             Reset Password
           </Text>
 
           <Text style={{ ...FONTS.h6, color: COLORS.black, marginTop: 10 }}>
-            Please enter the 6-digit CODE sent to your phone number.
+            In order to reset your password, you need to enter your active phone
+            number.
           </Text>
 
-          <View style={styles.verificationCodeContainer}>
-            <Text style={styles.inputLabel}>Enter the 6-digit code:</Text>
-            <TextInput
-              style={styles.verificationCodeInput}
-              onChangeText={handleChangeVerificationCode}
-              placeholder="Verification Code"
-              keyboardType="numeric"
-              maxLength={6}
-              value={verificationCode}
-            />
+          <Text style={{ ...FONTS.h6, color: COLORS.black, marginTop: 10 }}>
+            You will receive a 6-digit CODE on the phone number you entered.
+          </Text>
+
+
+          <View style={styles.phoneNumberContainer}>
+
+            <Text style={styles.inputLabel}>Enter your phone number:</Text>
+
+            <View style={styles.phoneInputContainer}>
+              <TextInput
+                style={styles.countryCodeInput}
+                onChangeText={handleChangeCountryCode}
+                placeholder="Country Code"
+                keyboardType="phone-pad"
+                maxLength={3}
+                value={countryCode}
+              />
+              <TextInput
+                style={styles.phoneNumberInput}
+                onChangeText={handleChangePhoneNumber}
+                placeholder="Phone Number"
+                keyboardType="phone-pad"
+                maxLength={10}
+                value={phoneNumber}
+              />
+            </View>
           </View>
         </View>
 
-        <View>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              { opacity: verificationCode.length < 6 ? 0.5 : 1 },
-            ]}
-            disabled={verificationCode.length < 6}
-            onPress={() => {
-              if (verificationCode.length < 6) return; // Disable the onPress functionality when the button is disabled
-              navigation.navigate("ResetPassword");
-            }}
-          >
-            <Text style={styles.buttonText}>Continue</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles.button, { opacity: phoneNumber.length < 10 ? 0.5 : 1 }]}
+          disabled={phoneNumber.length < 10}
+          onPress={() => {
+            if (phoneNumber.length < 10) return; // Disable the onPress functionality when the button is disabled
+            navigation.navigate('OtpVerification');
+          }}>
+
+          <Text style={styles.buttonText}>Receive Code</Text>
+
+        </TouchableOpacity>
 
         <View style={styles.bottomContainer}>
           <Image source={images.bottomDesign} style={styles.bottom} />
@@ -99,7 +122,7 @@ function OtpVerification({ navigation }) {
       </SafeAreaView>
     </PageContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   topContainer: {
@@ -133,15 +156,34 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
   },
-
-  verificationCodeContainer: {
-    marginBottom: 5,
+  phoneNumberContainer: {
+    marginBottom: 10,
   },
-  verificationCodeInput: {
+  phoneInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 2,
+  },
+  countryCodeInput: {
+    borderWidth: 1.5,
+    paddingHorizontal: 19,
+    paddingVertical: 14,
+    borderRadius: 10,
+    fontSize: 16,
+    backgroundColor: "#f5f5f5",
+    width: 75,
+    elevation: 8,
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 2,
+    shadowOpacity: 80,
+
+  },
+  phoneNumberInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
     marginBottom: 6,
+    marginLeft: 10,
     borderWidth: 1.5,
     paddingLeft: 25,
     paddingRight: 130,
@@ -156,7 +198,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 10,
     backgroundColor: "#f5f5f5",
   },
-
   button: {
     backgroundColor: COLORS.primaryRed,
     borderRadius: 13,
@@ -165,7 +206,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 100,
     marginRight: 100,
-    marginBottom: 150,
+    marginBottom: 90,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "black",
@@ -183,4 +224,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OtpVerification;
+export default ForgotPassword;

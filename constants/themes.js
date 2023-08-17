@@ -14,6 +14,8 @@ export const SIZES = {
   h2: 22,
   h3: 20,
   h4: 18,
+  h5: 16,
+  h6: 14.5,
   body1: 30,
   body2: 20,
   body3: 14,
@@ -35,7 +37,7 @@ export const SIZES = {
 export const FONTS = {
   largerTitles: { fontFamily: 'PoppinBold', fontSize: SIZES.largerTitles },
   title: { fontFamily: 'PoppinBold', fontSize: SIZES.title },
-  h1: { fontFamily: 'HeeboRegular', fontSize: SIZES.h1 },
+  h6: { fontFamily: 'HeeboRegular', fontSize: SIZES.h6 },
 };
 
 const appTheme = { COLORS, SIZES, FONTS };

@@ -16,11 +16,14 @@ import Button from "../components/Button";
 import PageContainer from "../components/PageContainer";
 
 const GetStarted = () => {
+
   const navigation = useNavigation(); // Add this line to get the navigation prop
+
   const handleButtonPress = () => {
     // When button is pressed
     navigation.navigate("Signin");
   };
+
   return (
     <PageContainer>
       <SafeAreaView style={{ flex: 1 }}>
@@ -55,6 +58,7 @@ const GetStarted = () => {
               style={{ marginHorizontal: 70 }}
             ></Image>
           </View>
+          
           <View
             style={{
               flexDirection: "row",
@@ -73,12 +77,15 @@ const GetStarted = () => {
             </Text>
             <Text style={{ ...FONTS.title, color: COLORS.black }}> Lives</Text>
           </View>
+
           <View>
             <Button title="Get Started" onPress={handleButtonPress} />
           </View>
+
           <View style={styles.bottomContainer}>
             <Image source={images.bottomDesign} style={styles.bottom} />
           </View>
+
         </View>
       </SafeAreaView>
     </PageContainer>
