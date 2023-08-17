@@ -3,25 +3,26 @@ import React, { Component, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import images from '../constants/images';
 
-// create a component
 
 
 
 
 
 
-const DropDown = ({ data = {},
-    value = [],
+
+const DropDown = ({
+    data = [],
+    value = {},
     onSelect = () => { }
 
 }) => {
+    console.log("selected value", !!value)
+    const [showOption, setShowOption] = useState(false)
 
     const onSelectedItem = (val) => {
         setShowOption(false)
         onSelect(val)
     }
-    console.log("selected value", !!value)
-    const [showOption, setShowOption] = useState(false)
 
     return (
         <View style={styles.container}>
@@ -41,25 +42,19 @@ const DropDown = ({ data = {},
                 padding: 2
             }}>
                 {data.map((val, i) => {
-                    return (<TouchableOpacity
-                        key={String(i)}
-                        onPress={() => onSelectedItem(val)}
-                        style={{
-                            backgroundColor: value.id == val.id ? 'grey' : 'white',
-                            padding: 8,
-                            borderRadius: 6,
-                            minHeight: 42,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: 6,
+                    return (
+                        <TouchableOpacity
+                            key={String(i)}
+                            onPress={() => onSelectedItem(val)}
+                            style={{
+                                ...styles.selectedItemStyle,
+                                backgroundColor: value && value.id == val.id ? 'pink' : 'green',
 
-                        }}
-
-
-                    >
-                        <Text> {val.name} </Text>
-                    </TouchableOpacity>)
+                            }}
+                        >
+                            <Text>{val.name}</Text>
+                        </TouchableOpacity>
+                    )
 
                 })}
             </View>)}
@@ -67,7 +62,7 @@ const DropDown = ({ data = {},
     );
 };
 
-// define your styles
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -82,11 +77,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderColor: 'black',
+        marginBottom: 8
 
 
+
+    },
+    selectedItemStyle: {
+        paddingVertical: 8,
+        borderRadius: 4,
+        paddingHorizontal: 9
     }
 });
 
-//make this component available to the app
+
 export default DropDown;
