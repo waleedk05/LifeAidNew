@@ -53,51 +53,54 @@ function SignupComplete() {
           })}
         />
         <ScrollView>
-          <View style={styles.topContainer}>
-            <Image source={images.topDesign} style={styles.top} />
-          </View>
+          <View style={{ flex: 1 }}>
 
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              paddingTop: 5,
-            }}
-          >
-            <Image source={images.logo} style={{ marginTop: -90 }}></Image>
-          </View>
-          <View style={{ marginLeft: 25, marginRight: 25 }}>
-            <Text
+
+            <View style={styles.topContainer}>
+              <Image source={images.topDesign} style={styles.top} />
+            </View>
+
+            <View
               style={{
-                ...FONTS.largerTitles,
-                color: COLORS.primaryRed,
-                marginTop: 10,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingTop: 5,
               }}
             >
-              Sign Up
-            </Text>
-            <Text style={styles.inputLabel}>Address</Text>
-
-            <Input placeholder={"Enter your full address"} />
-
-            <View>
-              <DropDown
-                value={selectedItem}
-                data={bloodType}
-                onSelect={onSelect}
-              />
+              <Image source={images.logo} style={{ marginTop: -90 }}></Image>
             </View>
-            <Input placeholder={"Enter your full address"} />
-            <Input placeholder={"Enter your full address"} />
-            <Input placeholder={"Enter your full address"} />
+            <View style={{ marginLeft: 25, marginRight: 25 }}>
+              <Text
+                style={{
+                  ...FONTS.largerTitles,
+                  color: COLORS.primaryRed,
+                  marginTop: 10,
+                }}
+              >
+                Sign Up
+              </Text>
+              <Text style={styles.inputLabel}>Address</Text>
+
+              <Input placeholder={"Enter your full address"} />
+
+              <View >
+                <DropDown
+                  value={selectedItem}
+                  data={bloodType}
+                  onSelect={onSelect}
+                />
+              </View>
+
+
+
+            </View>
+
+
+            <View style={styles.bottomContainer}>
+              <Image source={images.bottomDesign} style={styles.bottom} />
+            </View>
 
           </View>
-
-
-          <View style={styles.bottomContainer}>
-            <Image source={images.bottomDesign} style={styles.bottom} />
-          </View>
-
         </ScrollView>
       </SafeAreaView>
     </PageContainer>
@@ -117,11 +120,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   bottomContainer: {
-
-
-    position: 'absolute',
-    bottom: -50,
-    right: 10
+    flex: 1,
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   top: {
     height: 150,

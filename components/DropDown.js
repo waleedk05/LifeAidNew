@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import images from '../constants/images';
 
 
@@ -29,34 +29,39 @@ const DropDown = ({
             <TouchableOpacity
                 style={styles.dropDownStyle}
                 activeOpacity={0.8}
+
                 onPress={() => setShowOption(!showOption)}
             >
-                <Text>{!!value ? value?.name : 'Choose a blood type'}</Text>
+                <Text style={{ fontSize: 15 }}>{!!value ? value?.name : 'Choose a blood type'}</Text>
                 <Image
                     style={{ transform: [{ rotate: showOption ? '180deg' : '0deg' }] }}
                     source={images.downArrow} />
 
             </TouchableOpacity>
             {showOption && (<View style={{
-                backgroundColor: 'pink',
-                padding: 2
+                backgroundColor: '#DC5252',
+                padding: 5,
+                borderRadius: 12,
+                maxHeight: 140
+
             }}>
-                {data.map((val, i) => {
-                    return (
-                        <TouchableOpacity
-                            key={String(i)}
-                            onPress={() => onSelectedItem(val)}
-                            style={{
-                                ...styles.selectedItemStyle,
-                                backgroundColor: value && value.id == val.id ? 'pink' : 'green',
+                <ScrollView>
+                    {data.map((val, i) => {
+                        return (
+                            <TouchableOpacity
+                                key={String(i)}
+                                onPress={() => onSelectedItem(val)}
+                                style={{
+                                    ...styles.selectedItemStyle,
+                                    backgroundColor: value && value.id == val.id ? '#d3d3d3' : '#f5f5f5',
+                                }}
+                            >
+                                <Text>{val.name}</Text>
+                            </TouchableOpacity>
+                        )
 
-                            }}
-                        >
-                            <Text>{val.name}</Text>
-                        </TouchableOpacity>
-                    )
-
-                })}
+                    })}
+                </ScrollView>
             </View>)}
         </View>
     );
@@ -69,23 +74,26 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     dropDownStyle: {
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        padding: 19,
+        backgroundColor: '#f5f5f5',
+        padding: 18,
         borderRadius: 9,
         minHeight: 42,
         justifyContent: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 8
-
-
-
+        marginBottom: 4,
+        borderColor: 'black',
+        borderWidth: 1.5,
+        elevation: 8,
     },
     selectedItemStyle: {
-        paddingVertical: 8,
-        borderRadius: 4,
-        paddingHorizontal: 9
+        paddingVertical: 18,
+        borderRadius: 9,
+        paddingHorizontal: 15,
+        marginBottom: 7,
+        elevation: 8,
+
     }
 });
 
