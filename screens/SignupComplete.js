@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Pressable,
 } from "react-native";
 import React from "react";
 import { StatusBar } from "react-native";
@@ -17,6 +18,9 @@ import PageContainer from "../components/PageContainer";
 import Input from "../components/Input";
 import { useState } from 'react';
 import DropDown from '../components/DropDown';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import Button from "../components/Button";
+
 
 
 
@@ -33,11 +37,29 @@ let bloodType = [
 
 function SignupComplete() {
 
-  const [selectedItem, setSelectedItem] = useState(null)
-
+  const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = (item) => {
     setSelectedItem(item)
-  }
+  };
+  const [dateOfBirth, setDateOfBirth] = useState("");
+
+  const [date, setDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+  const toggleDatePicker = () => {
+    setShowPicker(showPicker);
+  };
+  const onChange = ({ type }, selectedDate) => {
+    if (type == "set") {
+      const currentDate = selectedDate;
+      setDate(currentDate);
+      if (Platform.OS === "android") {
+        toggleDatePicker();
+        setDateOfBirth(currentDate.toDateString());
+      }
+    } else {
+      toggleDatePicker();
+    }
+  };
 
   return (
     <PageContainer>
@@ -81,8 +103,9 @@ function SignupComplete() {
               </Text>
               <Text style={styles.inputLabel}>Address</Text>
 
-              <Input placeholder={"Enter your full address"} />
+              <Input placeholder={"Your full address"} />
 
+              <Text style={styles.inputLabel}>Blood Group:</Text>
               <View >
                 <DropDown
                   value={selectedItem}
@@ -90,11 +113,59 @@ function SignupComplete() {
                   onSelect={onSelect}
                 />
               </View>
+              <Text style={styles.inputLabel}>Date of Birth:</Text>
+
+              {showPicker && (
+                <DateTimePicker
+                  mode="date"
+                  display="default"
+                  value={date}
+                  onChange={onChange}
+                  style={styles.datePicker}
+
+                />
+              )}
+              {showPicker && Platform.OS === "ios" && (
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: "space-around"
+                }}>
+                  <TouchableOpacity style={[
+                    styles.button,
+                    styles.pickerButton,
+                    { backgroundColor: "#11182711" },
+                  ]}
+                    onPress={toggleDatePicker}
 
 
 
+                  >
+                    <Text style={styles.buttonText}>Cancel</Text>
+
+                  </TouchableOpacity>
+
+                </View>
+              )}
+
+              {!showPicker && (
+                <Pressable
+                  onPress={toggleDatePicker}
+                >
+                  <TextInput
+                    style={styles.Dob}
+                    placeholder={"Date of Birth"}
+                    editable={false}
+                    onPressIn={toggleDatePicker}
+                    onChangeText={setDateOfBirth}
+                    value={dateOfBirth}
+                  />
+
+                </Pressable>
+              )}
             </View>
-
+            <View>
+              <Button title="Register" />
+            </View>
 
             <View style={styles.bottomContainer}>
               <Image source={images.bottomDesign} style={styles.bottom} />
@@ -211,7 +282,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
 
-
+  Dob: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
+    marginBottom: 6,
+    marginLeft: 10,
+    borderWidth: 1.5,
+    paddingLeft: 25,
+    paddingRight: 140,
+    paddingVertical: 14,
+    borderRadius: 12,
+    fontSize: 16,
+    fontStyle: "normal",
+    elevation: 8,
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 2,
+    shadowOpacity: 10,
+    backgroundColor: "#f5f5f5",
+  },
 
   button: {
     backgroundColor: COLORS.primaryRed,
@@ -237,6 +327,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "HeeboRegular",
   },
+
+  datePicker: {
+    height: 120,
+    marginTop: -10
+  },
+  pickerButton: {
+    paddingHorizontal: 20
+  }
 
 });
 

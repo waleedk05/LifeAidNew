@@ -4,12 +4,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'rea
 import images from '../constants/images';
 
 
-
-
-
-
-
-
 const DropDown = ({
     data = [],
     value = {},
@@ -40,9 +34,9 @@ const DropDown = ({
             </TouchableOpacity>
             {showOption && (<View style={{
                 backgroundColor: '#DC5252',
-                padding: 5,
+                padding: 6,
                 borderRadius: 12,
-                maxHeight: 140
+                maxHeight: 180
 
             }}>
                 <ScrollView>
@@ -71,7 +65,7 @@ const DropDown = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 10
+        marginTop: 15
     },
     dropDownStyle: {
         backgroundColor: '#f5f5f5',
@@ -82,17 +76,25 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 4,
+        marginBottom: 2,
         borderColor: 'black',
         borderWidth: 1.5,
         elevation: 8,
+        shadowColor: "black",
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 2,
+        shadowOpacity: 10,
     },
     selectedItemStyle: {
         paddingVertical: 18,
         borderRadius: 9,
         paddingHorizontal: 15,
-        marginBottom: 7,
+        marginBottom: 5,
         elevation: 8,
+        shadowColor: "black",
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 2,
+        shadowOpacity: 10,
 
     }
 });
