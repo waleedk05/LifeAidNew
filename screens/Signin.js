@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 15,
-    marginBottom: 50
+    marginBottom: 70
   },
   signupText: {
     marginLeft: 5,

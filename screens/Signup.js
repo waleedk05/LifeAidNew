@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,33 +10,48 @@ import {
   TextInput,
   ScrollView
 } from "react-native";
-import React from "react";
 import { StatusBar } from "react-native";
 import images from "../constants/images";
-import { COLORS, FONTS, SIZES } from "../constants/themes";
+import { COLORS, FONTS } from "../constants/themes";
 import PageContainer from "../components/PageContainer";
 import Input from "../components/Input";
-import { useState } from 'react';
+import CustomDatePicker from "../components/CustomDatePicker";
+import CustomCheckbox from "../components/CustomCheckBox";
+import DropDown from '../components/DropDown';
+import 'firebase/auth';
+import 'firebase/firestore';
+import { validateEmail } from "../components/validation"; // Import the email validation function
+import firebase from "./firebase";
+
+const bloodType = [
+  { id: 1, name: 'A+' },
+  { id: 2, name: 'A-' },
+  { id: 3, name: 'B+' },
+  { id: 4, name: 'B-' },
+  { id: 5, name: 'AB+' },
+  { id: 6, name: 'AB-' },
+  { id: 7, name: 'O+' },
+  { id: 8, name: 'O-' }
+];
 
 function Signup({ navigation }) {
-
   const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(true); // Add email validation state
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('+92'); //Country Code
+  const [countryCode, setCountryCode] = useState('+92');
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [address, setAddress] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedGender, setSelectedGender] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Add the isLoading state
 
   const handleEmailChange = (text) => {
     setEmail(text);
-    setIsEmailValid(isValidEmail(text)); // Update email validation
+    setIsEmailValid(validateEmail(text));
   };
 
-  const isValidEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  };
   const handleChangePhoneNumber = (text) => {
-    // Limiting the phone number to 10 characters
     if (text.length <= 10) {
       setPhoneNumber(text);
     }
@@ -46,11 +62,47 @@ function Signup({ navigation }) {
   };
 
   const handlePassword = (text) => {
-    // Limiting the password to 8 characters
-    if (password.length <= 8) {
+    if (text.length <= 8) {
       setPassword(text);
     }
   };
+
+  const onSelect = (item) => {
+    setSelectedItem(item);
+  };
+
+
+  const handleSignUp = async () => {
+    try {
+      setIsLoading(true); // Set isLoading to true when signing up
+
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      const userId = userCredential.user.uid;
+
+      const userData = {
+        name: fullName,
+        email,
+        phoneNumber: `${countryCode}${phoneNumber}`,
+        address,
+        gender: selectedGender,
+        bloodGroup: selectedItem?.name,
+        // Add more fields as needed
+      };
+
+      await firebase.firestore().collection("users").doc(userId).set(userData);
+
+      navigation.navigate("Signin");
+    } catch (error) {
+      console.error("Error signing up:", error);
+    } finally {
+      setIsLoading(false); // Set isLoading back to false
+    }
+  };
+
+
 
   return (
     <PageContainer>
@@ -132,25 +184,53 @@ function Signup({ navigation }) {
 
             <Text style={styles.inputLabel}>Password:</Text>
             <Input placeholder="min. 8 characters" secureTextEntry maxLength={8} value={password} onChangeText={handlePassword} />
+            <Text style={styles.inputLabel}>Address</Text>
+
+            <Input placeholder={"Your full address"} />
+
+            <Text style={styles.inputLabel}>Select Your Gender:</Text>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 15 }}>
+
+              <CustomCheckbox
+                label="Male"
+                isChecked={selectedGender === "Male"}
+                onChange={setSelectedGender}
+              />
+              <CustomCheckbox
+                label="Female"
+                isChecked={selectedGender === "Female"}
+                onChange={setSelectedGender}
+              />
+            </View>
+
+            <Text style={styles.inputLabel}>Blood Group:</Text>
+            <View style={{ marginBottom: 15 }}>
+              <DropDown
+                value={selectedItem}
+                data={bloodType}
+                onSelect={onSelect}
+              />
+            </View>
+            <Text style={styles.inputLabel}>Date of Birth:</Text>
+
+            <CustomDatePicker />
 
           </View>
-
           <View>
             <TouchableOpacity
               style={[
                 styles.button,
                 { opacity: password.length < 8 ? 0.5 : 1 },
               ]}
-              disabled={password.length < 8}
-              onPress={() => {
-                if (password.length < 8) return; // Disable the onPress functionality when the button is disabled
-                navigation.navigate("SignupComplete");
-              }}
+              disabled={password.length < 8 || isLoading} // Disable button when loading
+              onPress={handleSignUp}
             >
-              <Text style={styles.buttonText}>Continue</Text>
+              <Text style={styles.buttonText}>
+                {isLoading ? "Signing Up..." : "Continue"}
+              </Text>
             </TouchableOpacity>
           </View>
-
 
 
 

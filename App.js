@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import OnboardingStarter from "./screens/OnboardingStarter";
+
 import {
   GetStarted,
   ForgotPassword,
@@ -8,14 +9,15 @@ import {
   ResetPassword,
   Signin,
   Signup,
-  SignupComplete,
 } from "./screens";
-import Home from "./screensMain/Home";
+import { Home } from "./screensMain";
+import { AdminSignIn } from "./screensAdmin"
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import firebase from "./screens/firebase";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -86,14 +88,15 @@ export default function App() {
           component={Signup}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="SignupComplete"
-          component={SignupComplete}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AdminSignIn"
+          component={AdminSignIn}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
