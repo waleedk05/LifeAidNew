@@ -76,7 +76,7 @@ function Signup({ navigation }) {
   //Firebase data Input
   // function to add data to firebase
   const dataAddOn = () => {
-    set(ref(db, 'users/' + 'newdata' + fullName), {
+    set(ref(db, 'users/' + fullName), {
       fullName: fullName,
       email: email,
       phoneNumber: `${countryCode}${phoneNumber}`,
