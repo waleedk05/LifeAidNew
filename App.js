@@ -17,7 +17,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import firebase from "./screens/firebase";
+
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
