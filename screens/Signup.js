@@ -18,10 +18,9 @@ import Input from "../components/Input";
 import CustomDatePicker from "../components/CustomDatePicker";
 import CustomCheckbox from "../components/CustomCheckBox";
 import DropDown from '../components/DropDown';
-import 'firebase/auth';
-import 'firebase/firestore';
 import { validateEmail } from "../components/validation"; // Import the email validation function
-import firebase from "./firebase";
+import { db } from '../config';
+import { ref, set } from 'firebase/database'
 
 const bloodType = [
   { id: 1, name: 'A+' },
@@ -35,16 +34,18 @@ const bloodType = [
 ];
 
 function Signup({ navigation }) {
+
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+92');
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Add the isLoading state
+  const [dateOfBirth, setDateofBirth] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
+
 
   const handleEmailChange = (text) => {
     setEmail(text);
@@ -72,37 +73,36 @@ function Signup({ navigation }) {
   };
 
 
-  const handleSignUp = async () => {
-    try {
-      setIsLoading(true); // Set isLoading to true when signing up
+  //Firebase data Input
+  // function to add data to firebase
+  const dataAddOn = () => {
+    set(ref(db, 'users/' + 'newdata' + fullName), {
+      fullName: fullName,
+      email: email,
+      phoneNumber: `${countryCode}${phoneNumber}`,
+      address: address,
+      gender: selectedGender,
+      bloodGroup: selectedItem?.name,
+      dateOfBirth: dateOfBirth,
+      password: password,
+    })
 
-      const userCredential = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-
-      const userId = userCredential.user.uid;
-
-      const userData = {
-        name: fullName,
-        email,
-        phoneNumber: `${countryCode}${phoneNumber}`,
-        address,
-        gender: selectedGender,
-        bloodGroup: selectedItem?.name,
-        // Add more fields as needed
-      };
-
-      await firebase.firestore().collection("users").doc(userId).set(userData);
-
-      navigation.navigate("Signin");
-    } catch (error) {
-      console.error("Error signing up:", error);
-    } finally {
-      setIsLoading(false); // Set isLoading back to false
-    }
+      .then(() => {
+        console.log('Data added successfully.');
+        setFullName('');
+        setEmail('');
+        setPhoneNumber('');
+        setCountryCode('+92');
+        setPassword('');
+        setAddress('');
+        setSelectedGender(null);
+        setDateofBirth(''); // Reset Date of Birth
+        setSelectedItem(null);
+      })
+      .catch(error => {
+        console.error('Error adding data:', error);
+      });
   };
-
-
 
   return (
     <PageContainer>
@@ -145,7 +145,9 @@ function Signup({ navigation }) {
 
             <Text style={styles.inputLabel}>Name</Text>
 
-            <Input placeholder={"Full Name"} />
+            <Input placeholder={"Full Name"}
+              value={fullName}
+              onChangeText={(text) => setFullName(text)} />
 
             <Text style={styles.inputLabel}>Email:</Text>
 
@@ -186,7 +188,8 @@ function Signup({ navigation }) {
             <Input placeholder="min. 8 characters" secureTextEntry maxLength={8} value={password} onChangeText={handlePassword} />
             <Text style={styles.inputLabel}>Address</Text>
 
-            <Input placeholder={"Your full address"} />
+            <Input placeholder={"Your full address"} value={address}
+              onChangeText={(text) => setAddress(text)} />
 
             <Text style={styles.inputLabel}>Select Your Gender:</Text>
 
@@ -219,15 +222,12 @@ function Signup({ navigation }) {
           </View>
           <View>
             <TouchableOpacity
-              style={[
-                styles.button,
-                { opacity: password.length < 8 ? 0.5 : 1 },
-              ]}
-              disabled={password.length < 8 || isLoading} // Disable button when loading
-              onPress={handleSignUp}
+              style={[styles.button]}
+              onPress={dataAddOn}
+
             >
               <Text style={styles.buttonText}>
-                {isLoading ? "Signing Up..." : "Continue"}
+                Sign Up
               </Text>
             </TouchableOpacity>
           </View>
