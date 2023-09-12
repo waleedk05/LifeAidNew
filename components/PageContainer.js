@@ -3,9 +3,6 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet,
-  Image,
-  View, // Import View component
 } from "react-native";
 import React from "react";
 

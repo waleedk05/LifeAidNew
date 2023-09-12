@@ -38,13 +38,13 @@ const OnboardingStarter = ({ navigation }) => {
       pages={[
         {
           backgroundColor: "#fff",
-          image: <Image source={require("../assets/hand.png")} />,
+          image: <Image source={require("../../assets/hand.png")} />,
           title: "Donate Blood",
           subtitle: "You can donate blood to the Organization",
         },
         {
           backgroundColor: "#fff",
-          image: <Image source={require("../assets/hand.png")} />,
+          image: <Image source={require("../../assets/hand.png")} />,
           title: "Request For Blood",
           subtitle: "You can make a blood donation request to the Organization",
         },

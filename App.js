@@ -1,38 +1,41 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from "@react-navigation/native";
-import OnboardingStarter from "./screens/OnboardingStarter";
-
-import {
-  GetStarted,
-  ForgotPassword,
-  OtpVerification,
-  ResetPassword,
-  Signin,
-  Signup,
-} from "./screens";
-import { Home } from "./screensMain";
-import { AdminSignIn } from "./screensAdmin"
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCallback } from "react";
+import Bottomtab from "./components/tabnavigate";
+import { UserProvider } from "./components/userContext";
+
+
+import {
+  OnboardingStarter,
+  GetStarted,
+  Signin,
+  Signup,
+  ForgotPassword,
+  OtpVerification,
+  ResetPassword,
+} from "./screens/AuthenticationScreens";
+
+import { Home, RequestPage, Profile } from "./screens/MainScreens";
+import { AdminSignIn } from "./screens/AdminScreens";
+
 
 
 SplashScreen.preventAutoHideAsync();
+
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+
+
 
 export default function App() {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
 
-  useEffect(() => {
-    AsyncStorage.getItem("alreadyLaunched").then((value) => {
-      if (value == null) {
-        AsyncStorage.setItem("alreadyLaunched", "true");
-        setIsFirstLaunch(true);
-      } else setIsFirstLaunch(false);
-    });
-  }, []);
+
+
 
   const [fontLoaded] = useFonts({
     HeeboRegular: require("./assets/fonts/Heebo-Regular.ttf"),
@@ -48,58 +51,47 @@ export default function App() {
     return null;
   }
 
-  return (
-    <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator
-        initialRouteName={isFirstLaunch ? "OnboardingStarter" : "GetStarted"}
-      >
-        <Stack.Screen
-          name="OnboardingStarter"
-          component={OnboardingStarter}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="GetStarted"
-          component={GetStarted}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Signin"
-          component={Signin}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ResetPassword"
-          component={ResetPassword}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="OtpVerification"
-          component={OtpVerification}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{ headerShown: false }}
-        />
 
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="AdminSignIn"
-          component={AdminSignIn}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+  return (
+    <UserProvider>
+      <NavigationContainer onReady={onLayoutRootView} initialRouteName="GetStarted">
+        <Stack.Navigator>
+
+          <Stack.Screen
+            name="GetStarted"
+            component={GetStarted}
+            options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Signin"
+            component={Signin}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+            options={{ headerShown: false }} />
+          <Stack.Screen
+            name="OtpVerification"
+            component={OtpVerification}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ResetPassword"
+            component={ResetPassword}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="tabnavigate" component={Bottomtab} options={{ headerShown: false }} />
+
+        </Stack.Navigator>
+
+
+      </NavigationContainer>
+    </UserProvider>
+
   );
 }

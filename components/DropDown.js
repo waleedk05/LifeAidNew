@@ -36,10 +36,10 @@ const DropDown = ({
                 backgroundColor: '#DC5252',
                 padding: 6,
                 borderRadius: 12,
-                maxHeight: 180
+                maxHeight: 500
 
             }}>
-                <ScrollView>
+                <ScrollView >
                     {data.map((val, i) => {
                         return (
                             <TouchableOpacity

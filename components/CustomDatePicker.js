@@ -11,8 +11,9 @@ const CustomDatePicker = () => {
     const handleDateChange = (event, date) => {
         if (date) {
             setSelectedDate(date);
+            onChange(date); // Pass the selected date back to the parent component
         }
-        setShowDatePicker(Platform.OS === "ios"); // Close the picker only on iOS
+        setShowDatePicker(false); // Close the picker only on iOS
     };
 
     const openDatePicker = () => {

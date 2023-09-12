@@ -10,10 +10,10 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "react-native";
-import images from "../constants/images";
-import { COLORS, FONTS, SIZES } from "../constants/themes";
-import PageContainer from "../components/PageContainer";
-import Input from "../components/Input";
+import images from "../../constants/images";
+import { COLORS, FONTS, SIZES } from "../../constants/themes";
+import PageContainer from "../../components/PageContainer";
+import Input from "../../components/Input";
 import { useState } from 'react';
 
 function ResetPassword({ navigation }) {

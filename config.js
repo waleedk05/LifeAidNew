@@ -1,20 +1,19 @@
-import firebase from 'firebase/compat/app';
-import { getDatabase } from 'firebase/database';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDwGu9ihtOEBYlAKoYda_wf8hGmU3ZQOX0",
-    authDomain: "lifeaid-ef819.firebaseapp.com",
-    databaseURL: "https://lifeaid-ef819-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "lifeaid-ef819",
-    storageBucket: "lifeaid-ef819.appspot.com",
-    messagingSenderId: "663779725794",
-    appId: "1:663779725794:web:029b23c7c31fed4659e9bb",
-    measurementId: "G-4F75QT3YM7"
+    apiKey: "AIzaSyDB74dG-bCG8afLqmAXxMqxV6C4rJj92xY",
+    authDomain: "lifeaidtest-1e0d2.firebaseapp.com",
+    projectId: "lifeaidtest-1e0d2",
+    storageBucket: "lifeaidtest-1e0d2.appspot.com",
+    messagingSenderId: "628105333743",
+    appId: "1:628105333743:web:6e2f28228313718cefc41a",
+    measurementId: "G-W0V5Z8421N"
 };
 
-if (firebase.apps.length === 0) {
-    firebase.initializeApp(firebaseConfig);
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-const db = getDatabase();
-export { db }
+export { auth, db };
