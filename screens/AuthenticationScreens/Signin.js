@@ -20,11 +20,11 @@ import { useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { auth, db } from '../../config';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { useUser } from "../../components/userContext";
+
 
 
 const Signin = (props) => {
-  const { setUser } = useUser();
+
 
   const [isLoading, setIsLoading] = useState(false);
 

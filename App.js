@@ -6,7 +6,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
 import Bottomtab from "./components/tabnavigate";
-import { UserProvider } from "./components/userContext";
+
 
 
 import {
@@ -53,45 +53,45 @@ export default function App() {
 
 
   return (
-    <UserProvider>
-      <NavigationContainer onReady={onLayoutRootView} initialRouteName="GetStarted">
-        <Stack.Navigator>
 
-          <Stack.Screen
-            name="GetStarted"
-            component={GetStarted}
-            options={{ headerShown: false }} />
-          <Stack.Screen
-            name="Signin"
-            component={Signin}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Signup"
-            component={Signup}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ForgotPassword"
-            component={ForgotPassword}
-            options={{ headerShown: false }} />
-          <Stack.Screen
-            name="OtpVerification"
-            component={OtpVerification}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ResetPassword"
-            component={ResetPassword}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="tabnavigate" component={Bottomtab} options={{ headerShown: false }} />
+    <NavigationContainer onReady={onLayoutRootView} initialRouteName="GetStarted">
+      <Stack.Navigator>
 
-        </Stack.Navigator>
+        <Stack.Screen
+          name="GetStarted"
+          component={GetStarted}
+          options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Signin"
+          component={Signin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={Signup}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{ headerShown: false }} />
+        <Stack.Screen
+          name="OtpVerification"
+          component={OtpVerification}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ResetPassword"
+          component={ResetPassword}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="tabnavigate" component={Bottomtab} options={{ headerShown: false }} />
+
+      </Stack.Navigator>
 
 
-      </NavigationContainer>
-    </UserProvider>
+    </NavigationContainer>
+
 
   );
 }

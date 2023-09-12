@@ -7,10 +7,10 @@ import { CommonActions } from '@react-navigation/native'; // Import CommonAction
 import { NavigationActions } from '@react-navigation/native';
 import { icons } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
-import { useUser } from '../../components/userContext';
+
 const Home = () => {
 
-  const { user } = useUser();
+
 
 
   return (
