@@ -10,10 +10,10 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "react-native";
-import images from "../constants/images";
-import { COLORS, FONTS, SIZES } from "../constants/themes";
-import Button from "../components/Button";
-import PageContainer from "../components/PageContainer";
+import images from "../../constants/images";
+import { COLORS, FONTS, SIZES } from "../../constants/themes";
+import Button from "../../components/Button";
+import PageContainer from "../../components/PageContainer";
 
 const GetStarted = () => {
 
@@ -58,7 +58,7 @@ const GetStarted = () => {
               style={{ marginHorizontal: 70 }}
             ></Image>
           </View>
-          
+
           <View
             style={{
               flexDirection: "row",

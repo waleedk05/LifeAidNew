@@ -1,10 +1,10 @@
 import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity, TextInput } from "react-native";
 import React from "react";
-import PageContainer from "../components/PageContainer";
+import PageContainer from "../../components/PageContainer";
 import { StatusBar } from "react-native";
 import { useState } from 'react';
-import images from "../constants/images";
-import { COLORS, FONTS, SIZES } from "../constants/themes";
+import images from "../../constants/images";
+import { COLORS, FONTS, SIZES } from "../../constants/themes";
 
 function OtpVerification({ navigation }) {
 

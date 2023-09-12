@@ -6,16 +6,27 @@ import {
   StyleSheet,
   Platform,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import React from "react";
-import { StatusBar } from "react-native";
-import images from "../constants/images";
-import { COLORS, FONTS, SIZES } from "../constants/themes";
-import PageContainer from "../components/PageContainer";
-import Input from "../components/Input";
+import { StatusBar, Alert } from "react-native";
+import images from "../../constants/images";
+import { COLORS, FONTS, SIZES } from "../../constants/themes";
+import PageContainer from "../../components/PageContainer";
+import Input from "../../components/Input";
 import { useState } from 'react';
+// Import the necessary functions for email authentication
 
-const Signin = ({ navigation }) => {
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { auth, db } from '../../config';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useUser } from "../../components/userContext";
+
+
+const Signin = (props) => {
+  const { setUser } = useUser();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true); // Add email validation state
@@ -36,6 +47,58 @@ const Signin = ({ navigation }) => {
   const isValidEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
+  };
+
+  const handleSignIn = () => {
+    setIsLoading(true); // Show the activity indicator
+
+    const auth = getAuth();
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('User signed in:', user);
+        setUser(user); // Update the user context
+
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('email', '==', email));
+        getDocs(q)
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              querySnapshot.forEach((doc) => {
+                const userData = doc.data();
+                const fullName = userData.fullName;
+
+                console.log('Full Name:', fullName);
+
+                // Navigate to the home screen with the user's full name
+                props.navigation.navigate('tabnavigate', { fullName });
+              });
+            } else {
+              console.error('User data not found');
+
+            }
+          })
+          .catch((error) => {
+            console.error('Error getting user data:', error);
+          })
+
+          .finally(() => {
+            setIsLoading(false); // Hide the activity indicator when done
+          });
+      })
+      .catch((error) => {
+        console.error('Error signing in:', error);
+        setIsLoading(false); // Hide the activity indicator on error
+        Alert.alert(
+          "ERROR!",
+          "Oops!  Please check your email or password and try again.",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        );
+      });
+
   };
 
 
@@ -100,24 +163,25 @@ const Signin = ({ navigation }) => {
         </View>
 
         <View>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              { opacity: password.length < 8 ? 0.5 : 1 },
-            ]}
-            disabled={password.length < 8}
-            onPress={() => {
-              if (password.length < 8) return; // Disable the onPress functionality when the button is disabled
-              navigation.navigate("Home");
-            }}
-          >
-            <Text style={styles.buttonText}>Sign In</Text>
-          </TouchableOpacity>
+          {isLoading ? (
+            <ActivityIndicator size="large" color={COLORS.primaryRed} />
+          ) : (
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { opacity: password.length < 8 ? 0.5 : 1 },
+              ]}
+              disabled={password.length < 8}
+              onPress={handleSignIn}
+            >
+              <Text style={styles.buttonText}>Sign In</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.forgotPassword}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("ForgotPassword")}
+            onPress={() => props.navigation.navigate("ForgotPassword")}
           >
             <Text
               style={{
@@ -136,7 +200,7 @@ const Signin = ({ navigation }) => {
             Don't have an account?
           </Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Signup")}>
             <Text style={styles.signupText}>Signup</Text>
           </TouchableOpacity>
         </View>

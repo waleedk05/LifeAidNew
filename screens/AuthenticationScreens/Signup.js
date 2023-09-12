@@ -11,16 +11,23 @@ import {
   ScrollView
 } from "react-native";
 import { StatusBar } from "react-native";
-import images from "../constants/images";
-import { COLORS, FONTS } from "../constants/themes";
-import PageContainer from "../components/PageContainer";
-import Input from "../components/Input";
-import CustomDatePicker from "../components/CustomDatePicker";
-import CustomCheckbox from "../components/CustomCheckBox";
-import DropDown from '../components/DropDown';
-import { validateEmail } from "../components/validation"; // Import the email validation function
-import { db } from '../config';
-import { ref, set } from 'firebase/database'
+import images from "../../constants/images";
+import { COLORS, FONTS } from "../../constants/themes";
+import PageContainer from "../../components/PageContainer";
+import Input from "../../components/Input";
+import CustomDatePicker from "../../components/CustomDatePicker";
+import CustomCheckbox from "../../components/CustomCheckBox";
+import DropDown from '../../components/DropDown';
+import { validateEmail } from "../../components/validation"; // Import the email validation function
+import { ActivityIndicator } from 'react-native';
+
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../../config';
+import { getAuth } from 'firebase/auth';
+import { set, ref } from 'firebase/firestore';
+
+
 
 const bloodType = [
   { id: 1, name: 'A+' },
@@ -45,6 +52,8 @@ function Signup({ navigation }) {
   const [selectedGender, setSelectedGender] = useState(null);
   const [dateOfBirth, setDateofBirth] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const handleEmailChange = (text) => {
@@ -72,35 +81,55 @@ function Signup({ navigation }) {
     setSelectedItem(item);
   };
 
+  const handleDateOfBirthChange = (date) => {
+    setDateofBirth(date);
+  };
 
   //Firebase data Input
   // function to add data to firebase
   const dataAddOn = () => {
-    set(ref(db, 'users/' + fullName), {
-      fullName: fullName,
-      email: email,
-      phoneNumber: `${countryCode}${phoneNumber}`,
-      address: address,
-      gender: selectedGender,
-      bloodGroup: selectedItem?.name,
-      dateOfBirth: dateOfBirth,
-      password: password,
-    })
+    setIsLoading(true); // Set loading state to true
+    const auth = getAuth();
 
-      .then(() => {
-        console.log('Data added successfully.');
-        setFullName('');
-        setEmail('');
-        setPhoneNumber('');
-        setCountryCode('+92');
-        setPassword('');
-        setAddress('');
-        setSelectedGender(null);
-        setDateofBirth(''); // Reset Date of Birth
-        setSelectedItem(null);
+    // Create a new user with email and password
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // User created successfully
+        const user = userCredential.user;
+        console.log('User created:', user);
+
+        // Now, save the user's other data to the Firestore Database
+        const usersCollection = collection(db, 'users');
+        addDoc(usersCollection, {
+          fullName: fullName,
+          email: email,
+          phoneNumber: `${countryCode}${phoneNumber}`,
+          address: address,
+          gender: selectedGender,
+          bloodGroup: selectedItem?.name,
+          dateOfBirth: dateOfBirth,
+        })
+          .then(() => {
+            console.log('Data added successfully.');
+            setIsLoading(false);
+            navigation.navigate('Home');
+            setFullName('');
+            setEmail('');
+            setPhoneNumber('');
+            setCountryCode('+92');
+            setPassword('');
+            setAddress('');
+            setSelectedGender(null);
+            setDateofBirth(null);
+            setSelectedItem(null);
+          })
+          .catch((error) => {
+            console.error('Error adding data:', error);
+            setIsLoading(false); // Make sure to set loading state to false in case of an error
+          });
       })
-      .catch(error => {
-        console.error('Error adding data:', error);
+      .catch((error) => {
+        console.error('Error creating user:', error);
       });
   };
 
@@ -217,7 +246,7 @@ function Signup({ navigation }) {
             </View>
             <Text style={styles.inputLabel}>Date of Birth:</Text>
 
-            <CustomDatePicker />
+            <CustomDatePicker onChangeText={handleDateOfBirthChange} />
 
           </View>
           <View>
@@ -230,6 +259,7 @@ function Signup({ navigation }) {
                 Sign Up
               </Text>
             </TouchableOpacity>
+            {isLoading && <ActivityIndicator size="small" color={COLORS.secondaryWhite} />}
           </View>
 
 
