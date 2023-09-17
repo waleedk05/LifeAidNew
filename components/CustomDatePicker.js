@@ -4,14 +4,18 @@ import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { COLORS, FONTS, SIZES } from "../constants/themes";
 
-const CustomDatePicker = () => {
+const CustomDatePicker = ({ onChangeText }) => {
+
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     const handleDateChange = (event, date) => {
         if (date) {
-            setSelectedDate(date);
-            onChange(date); // Pass the selected date back to the parent component
+            // Extract only the date part from the selected date
+            const selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+            setSelectedDate(selectedDate);
+            onChangeText(selectedDate); // Pass the selected date back to the parent component
         }
         setShowDatePicker(false); // Close the picker only on iOS
     };

@@ -58,7 +58,7 @@ const Signin = (props) => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('User signed in:', user);
-        setUser(user); // Update the user context
+
 
         const usersRef = collection(db, 'users');
         const q = query(usersRef, where('email', '==', email));
@@ -72,15 +72,12 @@ const Signin = (props) => {
                 console.log('Full Name:', fullName);
 
                 // Navigate to the home screen with the user's full name
-                props.navigation.navigate('tabnavigate', { fullName });
+                props.navigation.navigate('tabnavigate');
               });
             } else {
               console.error('User data not found');
 
             }
-          })
-          .catch((error) => {
-            console.error('Error getting user data:', error);
           })
 
           .finally(() => {

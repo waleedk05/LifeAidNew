@@ -19,8 +19,9 @@ import {
   ResetPassword,
 } from "./screens/AuthenticationScreens";
 
-import { Home, RequestPage, Profile } from "./screens/MainScreens";
-import { AdminSignIn } from "./screens/AdminScreens";
+
+import AdminDashboard from "./screens/BackendScreens/AdminDashboard";
+import { About, Invite, Menu, Settings } from "./screens/MainScreens";
 
 
 
@@ -86,6 +87,20 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="tabnavigate" component={Bottomtab} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminDashboard" component={AdminDashboard} options={{ headerShown: false }} />
+
+        <Stack.Screen name='Menu' component={Menu} options={{
+          title: 'Menu', headerStyle: { backgroundColor: 'white' }
+        }} />
+        <Stack.Screen name='Invite' component={Invite} options={{
+          title: 'Invite', headerStyle: { backgroundColor: 'white' }
+        }} />
+        <Stack.Screen name='About' component={About} options={{
+          title: 'About', headerStyle: { backgroundColor: 'white' }
+        }} />
+        <Stack.Screen name='Settings' component={Settings} options={{
+          title: 'Settings', headerStyle: { backgroundColor: 'white' }
+        }} />
 
       </Stack.Navigator>
 

@@ -56,6 +56,7 @@ function Signup({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
 
 
+
   const handleEmailChange = (text) => {
     setEmail(text);
     setIsEmailValid(validateEmail(text));
@@ -112,7 +113,7 @@ function Signup({ navigation }) {
           .then(() => {
             console.log('Data added successfully.');
             setIsLoading(false);
-            navigation.navigate('Home');
+            navigation.navigate('tabnavigate');
             setFullName('');
             setEmail('');
             setPhoneNumber('');
@@ -250,16 +251,19 @@ function Signup({ navigation }) {
 
           </View>
           <View>
-            <TouchableOpacity
-              style={[styles.button]}
-              onPress={dataAddOn}
+            {isLoading ? (
+              <ActivityIndicator size="large" color={COLORS.primaryRed} />
+            ) : (
+              <TouchableOpacity
+                style={[styles.button]}
+                onPress={dataAddOn}
 
-            >
-              <Text style={styles.buttonText}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-            {isLoading && <ActivityIndicator size="small" color={COLORS.secondaryWhite} />}
+              >
+                <Text style={styles.buttonText}>
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
 
 

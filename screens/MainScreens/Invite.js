@@ -1,10 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function AdminSignIn() {
+const Invite = () => {
     return (
         <View>
-            <Text>AdminSignIn</Text>
+            <Text>Invite</Text>
         </View>
     )
 }
+
+export default Invite;
