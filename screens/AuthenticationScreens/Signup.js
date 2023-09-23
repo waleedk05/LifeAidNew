@@ -16,7 +16,7 @@ import { COLORS, FONTS } from "../../constants/themes";
 import PageContainer from "../../components/PageContainer";
 import Input from "../../components/Input";
 import CustomDatePicker from "../../components/CustomDatePicker";
-import CustomCheckbox from "../../components/CustomCheckBox";
+import CustomCheckbox from "../../components/CustomCheckbox";
 import DropDown from '../../components/DropDown';
 import { validateEmail } from "../../components/validation"; // Import the email validation function
 import { ActivityIndicator } from 'react-native';
@@ -82,9 +82,7 @@ function Signup({ navigation }) {
     setSelectedItem(item);
   };
 
-  const handleDateOfBirthChange = (date) => {
-    setDateofBirth(date);
-  };
+
 
   //Firebase data Input
   // function to add data to firebase
@@ -99,7 +97,7 @@ function Signup({ navigation }) {
         const user = userCredential.user;
         console.log('User created:', user);
 
-        // Now, save the user's other data to the Firestore Database
+        // saving the user's other data to the Firestore Database
         const usersCollection = collection(db, 'users');
         addDoc(usersCollection, {
           fullName: fullName,
@@ -126,7 +124,7 @@ function Signup({ navigation }) {
           })
           .catch((error) => {
             console.error('Error adding data:', error);
-            setIsLoading(false); // Make sure to set loading state to false in case of an error
+            setIsLoading(false); // Setting loading state to false in case of an error
           });
       })
       .catch((error) => {
@@ -215,7 +213,7 @@ function Signup({ navigation }) {
             </View>
 
             <Text style={styles.inputLabel}>Password:</Text>
-            <Input placeholder="min. 8 characters" secureTextEntry maxLength={8} value={password} onChangeText={handlePassword} />
+            <Input placeholder="max. 8 characters" secureTextEntry maxLength={8} value={password} onChangeText={handlePassword} />
             <Text style={styles.inputLabel}>Address</Text>
 
             <Input placeholder={"Your full address"} value={address}
@@ -228,12 +226,12 @@ function Signup({ navigation }) {
               <CustomCheckbox
                 label="Male"
                 isChecked={selectedGender === "Male"}
-                onChange={setSelectedGender}
+                onChange={() => setSelectedGender("Male")}
               />
               <CustomCheckbox
                 label="Female"
                 isChecked={selectedGender === "Female"}
-                onChange={setSelectedGender}
+                onChange={() => setSelectedGender("Female")}
               />
             </View>
 
@@ -247,7 +245,7 @@ function Signup({ navigation }) {
             </View>
             <Text style={styles.inputLabel}>Date of Birth:</Text>
 
-            <CustomDatePicker onChangeText={handleDateOfBirthChange} />
+            <CustomDatePicker onDateChange={setDateofBirth} />
 
           </View>
           <View>

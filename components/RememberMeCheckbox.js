@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
-const CustomCheckbox = ({ label, isChecked, onChange }) => {
+const RememberMeCheckbox = ({ label, isChecked, onChange }) => {
     return (
-        <TouchableOpacity onPress={onChange}>
+        <TouchableOpacity onPress={() => onChange(!isChecked)}>
             <View style={styles.checkboxContainer}>
                 <View style={isChecked ? styles.checkboxChecked : styles.checkbox}></View>
                 <Text>{label}</Text>
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CustomCheckbox;
+export default RememberMeCheckbox;

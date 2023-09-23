@@ -38,6 +38,11 @@ export const FONTS = {
   largerTitles: { fontFamily: 'PoppinBold', fontSize: SIZES.largerTitles },
   title: { fontFamily: 'PoppinBold', fontSize: SIZES.title },
   h6: { fontFamily: 'HeeboRegular', fontSize: SIZES.h6 },
+  h5: { fontFamily: 'HeeboRegular', fontSize: SIZES.h5 },
+  h4: { fontFamily: 'HeeboRegular', fontSize: SIZES.h4 },
+  h3: { fontFamily: 'HeeboRegular', fontSize: SIZES.h3 },
+  h2: { fontFamily: 'HeeboRegular', fontSize: SIZES.h2 },
+  h1: { fontFamily: 'HeeboRegular', fontSize: SIZES.h1 },
 };
 
 const appTheme = { COLORS, SIZES, FONTS };

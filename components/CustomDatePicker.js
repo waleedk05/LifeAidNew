@@ -3,22 +3,34 @@ import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, Platform } from
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { COLORS, FONTS, SIZES } from "../constants/themes";
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../config';
 
-const CustomDatePicker = ({ onChangeText }) => {
+const CustomDatePicker = ({ onDateChange }) => {
 
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
 
-    const handleDateChange = (event, date) => {
+    const handleDateChange = async (event, date) => {
         if (date) {
             // Extract only the date part from the selected date
-            const selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            const isoDateString = date.toISOString().split('T')[0];
 
-            setSelectedDate(selectedDate);
-            onChangeText(selectedDate); // Pass the selected date back to the parent component
+            try {
+                // Access the Firestore collection and add the date of birth
+                const docRef = await addDoc(collection(db, 'users'), {
+                    dateOfBirth: isoDateString
+                });
+
+                // Optionally, you can return the document ID or do something with it
+                console.log('Document written with ID: ', docRef.id);
+            } catch (e) {
+                console.error('Error adding document: ', e);
+            }
         }
         setShowDatePicker(false); // Close the picker only on iOS
     };
+
 
     const openDatePicker = () => {
         setShowDatePicker(true);

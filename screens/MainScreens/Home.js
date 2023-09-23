@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, Alert, Share } from 'react-native';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../config';
 import PageContainer from '../../components/PageContainer';
@@ -51,7 +51,7 @@ const Home = (props) => {
                 <Text style={styles.text2}>Invite Friends</Text>
               </View>
               <Text style={styles.text3}>Inviting People can bring a change, someone in your friends & family would be able to help.</Text>
-              <TouchableOpacity onPress={() => props.navigation.navigate("Invite")}>
+              <TouchableOpacity>
                 <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row' }}>
                   <Text style={{ color: COLORS.primaryRed, fontWeight: 'bold' }}>Invite</Text>
                   <Image source={icons.rightArrowRed} style={{ height: 16, width: 14, marginLeft: 5 }} />

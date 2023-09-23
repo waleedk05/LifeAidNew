@@ -10,13 +10,11 @@ import Bottomtab from "./components/tabnavigate";
 
 
 import {
-  OnboardingStarter,
   GetStarted,
   Signin,
   Signup,
-  ForgotPassword,
-  OtpVerification,
   ResetPassword,
+
 } from "./screens/AuthenticationScreens";
 
 
@@ -73,33 +71,26 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-          options={{ headerShown: false }} />
-        <Stack.Screen
-          name="OtpVerification"
-          component={OtpVerification}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="ResetPassword"
           component={ResetPassword}
-          options={{ headerShown: false }}
-        />
+          options={{ headerShown: false }} />
+
+
+
         <Stack.Screen name="tabnavigate" component={Bottomtab} options={{ headerShown: false }} />
         <Stack.Screen name="AdminDashboard" component={AdminDashboard} options={{ headerShown: false }} />
 
         <Stack.Screen name='Menu' component={Menu} options={{
-          title: 'Menu', headerStyle: { backgroundColor: 'white' }
+          title: 'Menu', headerStyle: { backgroundColor: '#CF0A0A' }, headerTitleStyle: { color: 'white' }, headerTintColor: 'white'
         }} />
         <Stack.Screen name='Invite' component={Invite} options={{
-          title: 'Invite', headerStyle: { backgroundColor: 'white' }
+          title: 'Invite', headerStyle: { backgroundColor: '#CF0A0A' }, headerTitleStyle: { color: 'white' }, headerTintColor: 'white'
         }} />
         <Stack.Screen name='About' component={About} options={{
-          title: 'About', headerStyle: { backgroundColor: 'white' }
+          title: 'About', headerStyle: { backgroundColor: '#CF0A0A' }, headerTitleStyle: { color: 'white' }, headerTintColor: 'white'
         }} />
         <Stack.Screen name='Settings' component={Settings} options={{
-          title: 'Settings', headerStyle: { backgroundColor: 'white' }
+          title: 'Settings', headerStyle: { backgroundColor: '#CF0A0A' }, headerTitleStyle: { color: 'white' }, headerTintColor: 'white'
         }} />
 
       </Stack.Navigator>

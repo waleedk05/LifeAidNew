@@ -1,6 +1,7 @@
 const showPasswordIcon = require("../assets/icons/show_password_icon.png");
 const hidePasswordIcon = require("../assets/icons/hide_password_icon.png");
 const profilePicWhite = require("../assets/icons/profile_pic_white.png");
+const profilePicGrey = require("../assets/icons/profile_pic_grey.png");
 const home = require("../assets/icons/home_white.png");
 const requsetIcon = require("../assets/icons/request_icon_white.png");
 const donorIcon = require("../assets/icons/donors_icon_white.png");
@@ -13,11 +14,11 @@ const rightArrowBlack = require("../assets/icons/right_arrow.png");
 
 
 
-
 export default {
   showPasswordIcon,
   hidePasswordIcon,
   profilePicWhite,
+  profilePicGrey,
   home,
   requsetIcon,
   donorIcon,

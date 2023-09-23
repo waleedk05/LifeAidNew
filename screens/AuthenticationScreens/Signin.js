@@ -6,16 +6,21 @@ import {
   StyleSheet,
   Platform,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView
 } from "react-native";
 import React from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar, Alert } from "react-native";
 import images from "../../constants/images";
 import { COLORS, FONTS, SIZES } from "../../constants/themes";
 import PageContainer from "../../components/PageContainer";
 import Input from "../../components/Input";
+import CustomCheckbox from '../../components/CustomCheckbox';
+import RememberMeCheckbox from "../../components/RememberMeCheckbox";
 import { useState } from 'react';
 // Import the necessary functions for email authentication
+
 
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { auth, db } from '../../config';
@@ -25,6 +30,26 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Signin = (props) => {
 
+  React.useEffect(() => {
+    const getData = async () => {
+      try {
+        const storedEmail = await AsyncStorage.getItem('email');
+        const storedPassword = await AsyncStorage.getItem('password');
+
+        if (storedEmail !== null && storedPassword !== null) {
+          setEmail(storedEmail);
+          setPassword(storedPassword);
+        }
+      } catch (e) {
+        console.error('Error reading data from AsyncStorage:', e);
+      }
+    };
+
+    getData();
+  }, []);
+
+  // State for the "Remember Me" checkbox
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,6 +85,11 @@ const Signin = (props) => {
         console.log('User signed in:', user);
 
 
+        // Save email and password to AsyncStorage
+        AsyncStorage.setItem('email', email);
+        AsyncStorage.setItem('password', password);
+
+
         const usersRef = collection(db, 'users');
         const q = query(usersRef, where('email', '==', email));
         getDocs(q)
@@ -69,10 +99,10 @@ const Signin = (props) => {
                 const userData = doc.data();
                 const fullName = userData.fullName;
 
-                console.log('Full Name:', fullName);
+                console.log('Full Name:', { fullName: fullName });
 
                 // Navigate to the home screen with the user's full name
-                props.navigation.navigate('tabnavigate');
+                props.navigation.navigate('tabnavigate', { fullName });
               });
             } else {
               console.error('User data not found');
@@ -155,9 +185,18 @@ const Signin = (props) => {
           )}
 
           <Text style={styles.inputLabel}>Password:</Text>
-          <Input placeholder="min. 8 characters" secureTextEntry maxLength={8} value={password} onChangeText={handlePassword} />
+          <Input placeholder="max. 8 characters" secureTextEntry maxLength={8} value={password} onChangeText={handlePassword} />
 
+          <View style={{ marginTop: 10, marginLeft: 5 }}>
+            <RememberMeCheckbox
+              label="Keep me logged in"
+              isChecked={rememberMe}
+              onChange={setRememberMe}
+            />
+
+          </View>
         </View>
+
 
         <View>
           {isLoading ? (
@@ -178,7 +217,7 @@ const Signin = (props) => {
 
         <View style={styles.forgotPassword}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("ForgotPassword")}
+            onPress={() => props.navigation.navigate("ResetPassword")}
           >
             <Text
               style={{
@@ -205,6 +244,9 @@ const Signin = (props) => {
         <View style={styles.bottomContainer}>
           <Image source={images.bottomDesign} style={styles.bottom} />
         </View>
+
+
+
 
       </SafeAreaView>
     </PageContainer>
@@ -256,8 +298,8 @@ const styles = StyleSheet.create({
     marginLeft: -8,
   },
   bottom: {
-    height: 150,
-    width: 150,
+    height: 130,
+    width: 130,
     resizeMode: "contain",
     marginRight: -8,
     marginTop: 20,
